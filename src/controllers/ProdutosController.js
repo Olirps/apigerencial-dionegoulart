@@ -1,5 +1,6 @@
 // src/controllers/ProdutosController.js
 const ProdutosService = require('../services/ProdutosService');
+const ProdutoGestaoService = require('../services/ProdutoGestaoService');
 const { Op } = require('sequelize');
 
 class ProdutosController {
@@ -87,6 +88,26 @@ class ProdutosController {
             res.status(400).json({ error: err.message });
         }
     }
+
+    // Consulta de produtos vendidos
+    static async consultaProdutosVendidos(req, res) {
+        try {
+            const produtosVendidos = await ProdutoGestaoService.consultaProdutosVendidos();
+            res.status(200).json(produtosVendidos);
+        } catch (error) {
+            res.status(400).json({ erro: error.message });
+        }
+    }
+    
+    static async produtosMaisVendidosSemana(req, res) {
+        try {
+            const contas = await ProdutoGestaoService.produtosMaisVendidosSemana();
+            return res.status(200).json(contas);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
 }
 
 module.exports = ProdutosController;

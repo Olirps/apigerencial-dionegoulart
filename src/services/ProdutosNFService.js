@@ -3,7 +3,7 @@ const Produtos = require('../models/Produtos');
 const MovimentacoesEstoque = require('../models/MovimentacoesEstoque');
 const ItensNaoIdentificados = require('../models/ItensNaoIdentificados');
 const { literal } = require('sequelize');
-const VinculoProdVeiculo = require('../models/VinculoProdVeiculo');
+
 
 class ProdutosNFService {
 
@@ -30,7 +30,6 @@ class ProdutosNFService {
             const movimentacoesEstoque = await MovimentacoesEstoque.findAll({
                 where: {
                     nota_id,
-                    tipo_movimentacao :'entrada',
                     status: 0
                 },
                 include: [{
@@ -70,7 +69,6 @@ class ProdutosNFService {
                 };
                 produtos.push(produto);
             });
-
             return produtos;
         } catch (error) {
             console.error('Erro ao obter produtos:', error);
@@ -117,6 +115,7 @@ class ProdutosNFService {
 
 
     }
+
     static async obterQuantidadeRestanteParaVinculo(produto_id) {
         try {
             // Buscar a quantidade total do produto na nota fiscal
@@ -147,7 +146,6 @@ class ProdutosNFService {
             throw new Error('Erro ao obter a quantidade restante para vínculo.');
         }
     }
-
 
 }
 

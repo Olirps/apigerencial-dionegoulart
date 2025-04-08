@@ -16,15 +16,8 @@ const Veiculos = sequelize.define('Veiculos', {
   },
   placa: {
     type: DataTypes.STRING(10),
-    allowNull: true
-  },
-  ano: {
-    type: DataTypes.STRING(4),
     allowNull: true,
-  },
-  anomodelo: {
-    type: DataTypes.STRING(4),
-    allowNull: true,
+    unique: true,
   },
   quilometragem: {
     type: DataTypes.STRING(50),
@@ -46,7 +39,7 @@ const Veiculos = sequelize.define('Veiculos', {
       key: 'id',
     },
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   },
 }, {
   tableName: 'veiculos',

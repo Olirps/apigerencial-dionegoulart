@@ -10,7 +10,7 @@ const Fornecedores = sequelize.define('Fornecedores', {
   },
   nome: {
     type: DataTypes.STRING(150),
-    allowNull: true,
+    allowNull: false,
   },
   nomeFantasia: {
     type: DataTypes.STRING(150),
@@ -26,7 +26,7 @@ const Fornecedores = sequelize.define('Fornecedores', {
   },
   cpfCnpj: {
     type: DataTypes.STRING(14),
-    allowNull: true,
+    allowNull: false,
     unique: true,
   },
   fone: {
@@ -35,7 +35,7 @@ const Fornecedores = sequelize.define('Fornecedores', {
   },
   celular: {
     type: DataTypes.STRING(11),
-    allowNull: true
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING(100),
@@ -43,31 +43,27 @@ const Fornecedores = sequelize.define('Fornecedores', {
   },
   logradouro: {
     type: DataTypes.STRING(100),
-    allowNull: true
+    allowNull: false
   },
   numero: {
-    type: DataTypes.STRING(8),
-    allowNull: true
+    type: DataTypes.STRING(20),
+    allowNull: false
   },
   bairro: {
     type: DataTypes.STRING(100),
-    allowNull: true
-  },
-  complemento: {
-    type: DataTypes.STRING(100),
-    allowNull: true
+    allowNull: false
   },
   municipio: {
     type: DataTypes.STRING(100),
-    allowNull: true
+    allowNull: false
   },
   uf: {
     type: DataTypes.STRING(2),
-    allowNull: true
+    allowNull: false
   },
   cep: {
     type: DataTypes.STRING(8),
-    allowNull: true
+    allowNull: false
   },
   tipo_fornecedor: {
     type: DataTypes.ENUM('peça', 'maquinario', 'suplemento', 'transporte', 'servico'),
@@ -77,6 +73,7 @@ const Fornecedores = sequelize.define('Fornecedores', {
     type: DataTypes.ENUM('S', 'N'),
     allowNull: true
   }
+  
 }, {
   tableName: 'fornecedores',
   timestamps: true,

@@ -23,13 +23,16 @@ class ClientesService {
       }
     } else {
       cpfCnpjLimpo = (dados.cpfCnpj ?? dados.CNPJ)?.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (cpfCnpjLimpo !== "") {
+        if (!validarCnpj(cpfCnpjLimpo)) {
+          throw new Error(`CNPJ: ${(dados.cpfCnpj ?? dados.CNPJ)} é inválido`);
+        }
 
-      if (!validarCnpj(cpfCnpjLimpo)) {
-        throw new Error(`CNPJ: ${(dados.cpfCnpj ?? dados.CNPJ)} é inválido`);
-      }
-      const clientesExistente = await Clientes.findOne({ where: { cpfCnpj: cpfCnpjLimpo } });
-      if (clientesExistente) {
-        throw new Error(`CNPJ: ${(dados.cpfCnpj ?? dados.CNPJ)} já cadastrado`);
+        const clientesExistente = await Clientes.findOne({ where: { cpfCnpj: cpfCnpjLimpo } });
+
+        if (clientesExistente) {
+          throw new Error(`CNPJ: ${(dados.cpfCnpj ?? dados.CNPJ)} já cadastrado`);
+        }
       }
     }
     try {
@@ -56,7 +59,7 @@ class ClientesService {
       throw new Error(err.message);
     }
   }
-  
+
   static async obterTodosClientes(filtro) {
     try {
       return await Clientes.findAll({ where: filtro });
@@ -68,6 +71,25 @@ class ClientesService {
   static async obterClientePorId(id) {
     try {
       return await Clientes.findByPk(id);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  static async obterClientesPorFiltro(query) {
+    try {
+      const filtro = {};
+      if (query.razaoSocial.trim()) {
+        filtro.nome = { [Op.like]: `%${query.razaoSocial.trim()}%` };
+      }
+      if (query.nomeFantasia.trim()) {
+        filtro.nomeFantasia = { [Op.like]: `%${query.nomeFantasia.trim()}%` };
+      }
+      if (query.cpfCnpj.trim()) {
+        filtro.cpfCnpj = { [Op.like]: `%${query.cpfCnpj.trim()}%` };
+      }
+
+      return await Clientes.findAll({ where: filtro });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -104,6 +126,10 @@ class ClientesService {
       if (updated) {
         // Se o registro foi atualizado, buscar e retornar a pessoa atualizada
         return await Clientes.findByPk(id);
+      }
+
+      if (updated == 0 && clientesExistente.id == id) {
+        return 'Nenhum dado foi alterado';
       }
 
       // Se não foi atualizado, retornar null

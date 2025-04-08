@@ -5,7 +5,7 @@ const ProdutosNFService = require('../services/ProdutosNFService'); // Ajuste o 
 class ProdutosNFController {
 
     // Controller para lidar com a requisição e resposta
-    static async getProdutosPorNotaFiscal (req, res) {
+    static async getProdutosPorNotaFiscal(req, res) {
         try {
             const notaFiscalId = req.params.notaFiscalId;
 
@@ -20,10 +20,10 @@ class ProdutosNFController {
         }
     };
 
-    static async vincularProdutoNF (req, res){
+    static async vincularProdutoNF(req, res) {
         try {
             // Obter produtos através do serviço
-            const produtos = await ProdutosNFService.vincularProdutoNF(req.params.id,req.body);
+            const produtos = await ProdutosNFService.vincularProdutoNF(req.params.id, req.body);
 
             // Retornar os produtos como resposta
             res.json(produtos);
@@ -32,11 +32,11 @@ class ProdutosNFController {
             res.status(500).send('Erro ao vincular produtos');
         }
     };
-    
-    static async desvincularProdutoNF (req, res){
+
+    static async desvincularProdutoNF(req, res) {
         try {
             // Obter produtos através do serviço
-            const produtos = await ProdutosNFService.desvincularProdutoNF(req.params.id,req.body);
+            const produtos = await ProdutosNFService.desvincularProdutoNF(req.params.id, req.body);
 
             // Retornar os produtos como resposta
             res.json(produtos);
@@ -60,5 +60,6 @@ class ProdutosNFController {
             res.status(500).send('Erro ao obter quantidade restante para vínculo');
         }
     }
+
 }
 module.exports = ProdutosNFController;
